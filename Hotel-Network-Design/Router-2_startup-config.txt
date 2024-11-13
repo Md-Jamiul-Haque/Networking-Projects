@@ -1,0 +1,139 @@
+!
+version 15.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R2
+!
+!
+!
+!
+ip dhcp excluded-address 192.168.3.62
+ip dhcp excluded-address 192.168.4.62
+ip dhcp excluded-address 192.168.5.62
+ip dhcp excluded-address 192.168.20.1
+!
+ip dhcp pool Sales
+ network 192.168.3.0 255.255.255.0
+ default-router 192.168.3.62
+ dns-server 192.168.3.62
+ domain-name jamiul.com
+ip dhcp pool HR
+ network 192.168.4.0 255.255.255.0
+ default-router 192.168.4.62
+ dns-server 192.168.4.62
+ domain-name jamiul.com
+ip dhcp pool Finance
+ network 192.168.5.0 255.255.255.0
+ default-router 192.168.5.62
+ dns-server 192.168.5.62
+ domain-name jamiul.com
+ip dhcp pool AP2
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 192.168.20.1
+ domain-name jamiul.com
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username jamiul password 0 jamiul
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name jamiul.com
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.3.62 255.255.255.0
+!
+interface GigabitEthernet0/0/0.40
+ encapsulation dot1Q 40
+ ip address 192.168.4.62 255.255.255.0
+!
+interface GigabitEthernet0/0/0.50
+ encapsulation dot1Q 50
+ ip address 192.168.5.62 255.255.255.0
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/2/0
+ ip address 10.10.10.2 255.255.255.252
+!
+interface Serial0/2/1
+ ip address 10.10.10.5 255.255.255.252
+ clock rate 64000
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 2.2.2.2
+ log-adjacency-changes
+ passive-interface GigabitEthernet0/0/0
+ network 10.10.10.0 0.0.0.255 area 0
+ network 10.10.10.0 0.0.0.3 area 0
+ network 10.10.10.4 0.0.0.3 area 0
+ network 192.168.3.0 0.0.0.255 area 0
+ network 192.168.4.0 0.0.0.255 area 0
+ network 192.168.5.0 0.0.0.255 area 0
+ network 192.168.20.0 0.0.0.255 area 0
+ default-information originate
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+!
+!
+end
+

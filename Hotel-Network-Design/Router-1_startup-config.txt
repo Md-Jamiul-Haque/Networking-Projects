@@ -1,0 +1,128 @@
+!
+version 15.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R1
+!
+!
+!
+!
+ip dhcp excluded-address 192.168.6.62
+ip dhcp excluded-address 192.168.7.62
+ip dhcp excluded-address 192.168.8.62
+!
+ip dhcp pool Logistics
+ network 192.168.6.0 255.255.255.0
+ default-router 192.168.6.62
+ dns-server 192.168.6.62
+ domain-name jamiul.com
+ip dhcp pool Store
+ network 192.168.7.0 255.255.255.0
+ default-router 192.168.7.62
+ dns-server 192.168.7.62
+ domain-name jamiul.com
+ip dhcp pool Reception
+ network 192.168.8.0 255.255.255.0
+ default-router 192.168.8.62
+ dns-server 192.168.8.62
+ domain-name jamiul.com
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username jamiul password 0 jamiul
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name jamiul.com
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/0.60
+ encapsulation dot1Q 60
+ ip address 192.168.6.62 255.255.255.0
+!
+interface GigabitEthernet0/0/0.70
+ encapsulation dot1Q 70
+ ip address 192.168.7.62 255.255.255.0
+!
+interface GigabitEthernet0/0/0.80
+ encapsulation dot1Q 80
+ ip address 192.168.8.62 255.255.255.0
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/2/0
+ ip address 10.10.10.9 255.255.255.252
+!
+interface Serial0/2/1
+ ip address 10.10.10.1 255.255.255.252
+ clock rate 64000
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 1.1.1.1
+ log-adjacency-changes
+ passive-interface GigabitEthernet0/0/0
+ network 10.10.10.0 0.0.0.255 area 0
+ network 10.10.10.0 0.0.0.3 area 0
+ network 10.10.10.8 0.0.0.3 area 0
+ network 192.168.6.0 0.0.0.255 area 0
+ network 192.168.7.0 0.0.0.255 area 0
+ network 192.168.8.0 0.0.0.255 area 0
+ default-information originate
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+!
+!
+end
+
