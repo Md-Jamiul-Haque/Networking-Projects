@@ -1,3 +1,5 @@
+## Addressing Table
+
 | Device | Interface | IP Address     | Subnet Mask     | Default Gateway |
 |--------|-----------|----------------|-----------------|-----------------|
 | HQ     | S0/0/0    | 10.0.0.1       | 255.255.255.252 | N/A             |
